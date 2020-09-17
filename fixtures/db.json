@@ -1,5 +1,95 @@
 [
 {
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Managers",
+    "permissions": [
+      25,
+      26,
+      27,
+      28,
+      45,
+      46,
+      47,
+      48,
+      29,
+      30,
+      31,
+      32,
+      37,
+      49,
+      38,
+      39,
+      40,
+      33,
+      34,
+      35,
+      36,
+      41,
+      42,
+      43,
+      44
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$DYBAbyd4tm4W$0BISZAKzxXs/I8+lpMohsDR8QfwKTiWd3eRCQVCzTUY=",
+    "last_login": "2020-09-17T12:14:43.023Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@admin.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-09-17T09:11:17.431Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$JXpaxo0SCEyv$is/bqK44lh5SmVKAcBiguynXQ5G8XO4EU1ML2zk1y8Y=",
+    "last_login": "2020-09-17T12:04:48.102Z",
+    "is_superuser": false,
+    "username": "manager",
+    "first_name": "",
+    "last_name": "",
+    "email": "manager@example.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-09-17T11:58:21Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$dkF6w4l2cXoc$B8E8U37IwRCYhG3KtYcZjN2IhojsbVp1Wh+a985uRWY=",
+    "last_login": "2020-09-17T12:15:28.198Z",
+    "is_superuser": false,
+    "username": "user",
+    "first_name": "",
+    "last_name": "",
+    "email": "user@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2020-09-17T12:15:27.945Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
   "model": "example.genre",
   "pk": 1,
   "fields": {
@@ -147,7 +237,8 @@
     "book": 1,
     "imprint": "ISBN 0-00-763555-9",
     "due_back": "2020-09-30",
-    "status": 2
+    "status": 2,
+    "borrower": 1
   }
 },
 {
@@ -157,7 +248,8 @@
     "book": 3,
     "imprint": "BBC Books",
     "due_back": null,
-    "status": 1
+    "status": 1,
+    "borrower": null
   }
 },
 {
@@ -167,7 +259,8 @@
     "book": 3,
     "imprint": "BBC Books",
     "due_back": null,
-    "status": 3
+    "status": 3,
+    "borrower": null
   }
 },
 {
@@ -177,7 +270,8 @@
     "book": 3,
     "imprint": "BBC Books",
     "due_back": "2020-09-18",
-    "status": 2
+    "status": 2,
+    "borrower": 1
   }
 },
 {
@@ -187,7 +281,8 @@
     "book": 2,
     "imprint": "OKI ES3640XF-Serie",
     "due_back": null,
-    "status": 3
+    "status": 3,
+    "borrower": null
   }
 },
 {
@@ -197,7 +292,8 @@
     "book": 1,
     "imprint": "ISBN 0-00-763555-9",
     "due_back": null,
-    "status": 3
+    "status": 3,
+    "borrower": null
   }
 },
 {
@@ -207,7 +303,8 @@
     "book": 4,
     "imprint": "test",
     "due_back": null,
-    "status": 1
+    "status": 1,
+    "borrower": null
   }
 },
 {
@@ -217,7 +314,8 @@
     "book": 1,
     "imprint": "ISBN 0-00-763555-9",
     "due_back": null,
-    "status": 1
+    "status": 1,
+    "borrower": null
   }
 },
 {
@@ -227,7 +325,8 @@
     "book": 2,
     "imprint": "OKI ES3640XF-Serie",
     "due_back": "2020-09-21",
-    "status": 2
+    "status": 2,
+    "borrower": 1
   }
 },
 {
@@ -237,7 +336,8 @@
     "book": 1,
     "imprint": "ISBN 0-00-763555-9",
     "due_back": null,
-    "status": 1
+    "status": 1,
+    "borrower": null
   }
 },
 {
@@ -247,7 +347,8 @@
     "book": 2,
     "imprint": "OKI ES3640XF-Serie",
     "due_back": null,
-    "status": 1
+    "status": 1,
+    "borrower": null
   }
 },
 {

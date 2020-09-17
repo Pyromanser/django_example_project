@@ -1,7 +1,12 @@
 import uuid
+from datetime import date
 
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Genre(models.Model):
@@ -29,6 +34,14 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    def display_genre(self):
+        return ', '.join([genre.name for genre in self.genre.all()[:3]])
+
+    display_genre.short_description = 'Genre'
+
+    def get_absolute_url(self):
+        return reverse('book-detail', args=[str(self.id)])
+
 
 class BookInstance(models.Model):
 
@@ -42,10 +55,18 @@ class BookInstance(models.Model):
     book = models.ForeignKey("Book", on_delete=models.SET_NULL, null=True)
     imprint = models.CharField(_("imprint"), max_length=200, help_text=_("Enter publisher trade name"))
     due_back = models.DateField(_("due back"), null=True, blank=True)
-    status = models.PositiveSmallIntegerField(choices=LoanStatus.choices, default=LoanStatus.MAINTENANCE, blank=True)
+    status = models.PositiveSmallIntegerField(choices=LoanStatus.choices, default=LoanStatus.MAINTENANCE, blank=True, help_text=_('Book availability'))
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
-        ordering = ["due_back"]
+        ordering = ['due_back']
+        permissions = (("can_mark_returned", "Set book as returned"),)
+
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
 
     def __str__(self):
         return f"{self.id} ({self.book.title})"
@@ -57,8 +78,15 @@ class Author(models.Model):
     date_of_birth = models.DateField(_("date of birth"), null=True, blank=True)
     date_of_death = models.DateField(_("date of death"), null=True, blank=True)
 
+    class Meta:
+        ordering = ['last_name', 'first_name']
+
     def __str__(self):
         return f"{self.last_name}, {self.first_name}"
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('author-detail', args=[str(self.id)])
 
 
 class AuthorProfile(models.Model):
