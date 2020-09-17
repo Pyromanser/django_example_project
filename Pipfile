@@ -8,6 +8,11 @@ verify_ssl = true
 [packages]
 djangorestframework = "*"
 Django = "*"
+django-extensions = "*"
+pyparsing = "*"
+pydot = "*"
+humanize = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.8"
