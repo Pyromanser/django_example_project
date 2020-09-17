@@ -5,6 +5,10 @@
   <h1>Author: {{ author }} </h1>
   <p>{{ author.date_of_birth }} - {% if author.date_of_death %}{{ author.date_of_death }}{% endif %}</p>
 
+    {% if author.authorprofile %}
+        <p>{{ author.authorprofile.about }}</p>
+    {% endif %}
+
   <div style="margin-left:20px;margin-top:20px">
     <h4>Books</h4>
 
