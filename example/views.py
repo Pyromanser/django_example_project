@@ -1,15 +1,18 @@
 import datetime
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import permission_required
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.decorators import permission_required
+from django.core.mail import send_mail, BadHeaderError
+
 
 from example.models import Book, Author, BookInstance
-from example.forms import RenewBookForm, RegisterForm
+from example.forms import RenewBookForm, RegisterForm, ContactFrom
 
 
 def index(request):
@@ -36,6 +39,30 @@ def index(request):
             'num_authors': num_authors,
             'num_visits': num_visits
         },
+    )
+
+
+def contact_form(request):
+    if request.method == "GET":
+        form = ContactFrom()
+    else:
+        form = ContactFrom(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, message, from_email, ['admin@example.com'])
+                messages.add_message(request, messages.SUCCESS, 'Message sent')
+            except BadHeaderError:
+                messages.add_message(request, messages.ERROR, 'Message not sent')
+            return redirect('contact')
+    return render(
+        request,
+        "example/contact.html",
+        context={
+            "form": form,
+        }
     )
 
 
