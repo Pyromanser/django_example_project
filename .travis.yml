@@ -4,5 +4,9 @@ python:
 install:
   - pip install pipenv
   - pipenv install
+before_script:
+  - python manage.py migrate
+  - python manage.py collectstatic --noinput
 script:
   - flake8 .
+  - python manage.py test
