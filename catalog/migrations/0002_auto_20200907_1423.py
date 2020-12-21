@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('example', '0001_initial'),
+        ('catalog', '0001_initial'),
     ]
 
     operations = [
@@ -21,6 +21,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='book',
             name='language',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='example.language', verbose_name='language'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.language', verbose_name='language'),
         ),
     ]

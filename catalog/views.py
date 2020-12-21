@@ -1,17 +1,17 @@
 import datetime
 
+from catalog.forms import ContactFrom, RegisterForm, RenewBookForm
+from catalog.models import Author, Book, BookInstance
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-
-from example.forms import ContactFrom, RegisterForm, RenewBookForm
-from example.models import Author, Book, BookInstance
 
 
 def index(request):
@@ -58,7 +58,7 @@ def contact_form(request):
             return redirect('contact')
     return render(
         request,
-        "example/contact.html",
+        "catalog/contact.html",
         context={
             "form": form,
         }
@@ -106,7 +106,7 @@ class AuthorDetailView(generic.DetailView):
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
     """Generic class-based view listing books on loan to current user."""
     model = BookInstance
-    template_name = 'example/bookinstance_list_borrowed_user.html'
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
     paginate_by = 10
 
     def get_queryset(self):
@@ -120,15 +120,16 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
 class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
     """Generic class-based view listing all books on loan. Only visible to users with can_mark_returned permission."""
     model = BookInstance
-    permission_required = 'example.can_mark_returned'
-    template_name = 'example/bookinstance_list_borrowed_all.html'
+    permission_required = 'catalog.can_mark_returned'
+    template_name = 'catalog/bookinstance_list_borrowed_all.html'
     paginate_by = 10
 
     def get_queryset(self):
         return BookInstance.objects.filter(status__exact=BookInstance.LoanStatus.ON_LOAN).order_by('due_back')
 
 
-@permission_required('example.can_mark_returned')
+@login_required
+@permission_required('catalog.can_mark_returned', raise_exception=True)
 def renew_book_librarian(request, pk):
     """View function for renewing a specific BookInstance by librarian."""
     book_instance = get_object_or_404(BookInstance, pk=pk)
@@ -158,42 +159,42 @@ def renew_book_librarian(request, pk):
         'book_instance': book_instance,
     }
 
-    return render(request, 'example/book_renew_librarian.html', context)
+    return render(request, 'catalog/book_renew_librarian.html', context)
 
 
 class AuthorCreate(PermissionRequiredMixin, generic.CreateView):
     model = Author
-    fields = '__all__'
-    initial = {'date_of_death': '05/01/2018'}
-    permission_required = 'example.can_mark_returned'
+    fields = '__all__'  # Not recommended (potential security issue if more fields added)
+    initial = {'date_of_death': '11/06/2020'}
+    permission_required = 'catalog.can_mark_returned'
 
 
 class AuthorUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = Author
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
-    permission_required = 'example.can_mark_returned'
+    permission_required = 'catalog.can_mark_returned'
 
 
 class AuthorDelete(PermissionRequiredMixin, generic.DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
-    permission_required = 'example.can_mark_returned'
+    permission_required = 'catalog.can_mark_returned'
 
 
 # Classes created for the forms challenge
 class BookCreate(PermissionRequiredMixin, generic.CreateView):
     model = Book
-    fields = '__all__'
-    permission_required = 'example.can_mark_returned'
+    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
+    permission_required = 'catalog.can_mark_returned'
 
 
 class BookUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = Book
-    fields = '__all__'
-    permission_required = 'example.can_mark_returned'
+    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
+    permission_required = 'catalog.can_mark_returned'
 
 
 class BookDelete(PermissionRequiredMixin, generic.DeleteView):
     model = Book
     success_url = reverse_lazy('books')
-    permission_required = 'example.can_mark_returned'
+    permission_required = 'catalog.can_mark_returned'

@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('example', '0004_bookinstance_borrower'),
+        ('catalog', '0004_bookinstance_borrower'),
     ]
 
     operations = [

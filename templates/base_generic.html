@@ -15,6 +15,7 @@
           integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
           crossorigin="anonymous"></script>
 
+
   <!-- Add additional CSS in static file -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -28,14 +29,15 @@
       <div class="col-sm-12">
         {% for message in messages %}
           <div class="alert alert-{{ message.tags }} alert-dismissible text-center" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error{% else %}{{ message.tags|title }}{% endif %}!</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <strong>{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error{% else %}
+              {{ message.tags|title }}{% endif %}!</strong> {{ message }}
           </div>
         {% endfor %}
       </div>
     </div>
   {% endif %}
-
   <div class="row">
     <div class="col-sm-2">
       {% block sidebar %}
@@ -61,7 +63,7 @@
           <hr/>
           <ul class="sidebar-nav">
             <li>Staff</li>
-            {% if perms.example.can_mark_returned %}
+            {% if perms.catalog.can_mark_returned %}
               <li><a href="{% url 'all-borrowed' %}">All borrowed</a></li>
             {% endif %}
           </ul>

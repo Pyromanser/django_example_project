@@ -90,97 +90,97 @@
   }
 },
 {
-  "model": "example.genre",
+  "model": "catalog.genre",
   "pk": 1,
   "fields": {
     "name": "Fantasy"
   }
 },
 {
-  "model": "example.genre",
+  "model": "catalog.genre",
   "pk": 2,
   "fields": {
     "name": "Adventure"
   }
 },
 {
-  "model": "example.genre",
+  "model": "catalog.genre",
   "pk": 3,
   "fields": {
     "name": "Thriller"
   }
 },
 {
-  "model": "example.genre",
+  "model": "catalog.genre",
   "pk": 4,
   "fields": {
     "name": "Science Fiction"
   }
 },
 {
-  "model": "example.genre",
+  "model": "catalog.genre",
   "pk": 5,
   "fields": {
     "name": "Romance"
   }
 },
 {
-  "model": "example.genre",
+  "model": "catalog.genre",
   "pk": 6,
   "fields": {
     "name": "Detective Fiction"
   }
 },
 {
-  "model": "example.genre",
+  "model": "catalog.genre",
   "pk": 7,
   "fields": {
     "name": "History"
   }
 },
 {
-  "model": "example.language",
+  "model": "catalog.language",
   "pk": 1,
   "fields": {
     "name": "English"
   }
 },
 {
-  "model": "example.language",
+  "model": "catalog.language",
   "pk": 2,
   "fields": {
     "name": "Russian"
   }
 },
 {
-  "model": "example.language",
+  "model": "catalog.language",
   "pk": 3,
   "fields": {
     "name": "French"
   }
 },
 {
-  "model": "example.language",
+  "model": "catalog.language",
   "pk": 4,
   "fields": {
     "name": "Spanish"
   }
 },
 {
-  "model": "example.language",
+  "model": "catalog.language",
   "pk": 5,
   "fields": {
     "name": "Japanese"
   }
 },
 {
-  "model": "example.book",
+  "model": "catalog.book",
   "pk": 1,
   "fields": {
     "title": "The Lord of the Rings",
     "author": 1,
     "summary": "The title names the story's main antagonist, the Dark Lord Sauron, who had in an earlier age created the One Ring to rule the other Rings of Power as the ultimate weapon in his campaign to conquer and rule all of Middle-earth. From homely beginnings in the Shire, a hobbit land reminiscent of the English countryside, the story ranges across Middle-earth, following the quest mainly through the eyes of the hobbits Frodo, Sam, Merry and Pippin.",
-    "isnb": "9780544003415",
+    "isbn": "9780544003415",
     "language": 1,
     "genre": [
       1
@@ -188,13 +188,13 @@
   }
 },
 {
-  "model": "example.book",
+  "model": "catalog.book",
   "pk": 2,
   "fields": {
     "title": "Les Misérables",
     "author": 2,
     "summary": "Examining the nature of law and grace, the novel elaborates upon the history of France, the architecture and urban design of Paris, politics, moral philosophy, antimonarchism, justice, religion, and the types and nature of romantic and familial love. Les Misérables has been popularized through numerous adaptations for film, television and the stage, including a musical.",
-    "isnb": "9086425874862",
+    "isbn": "9086425874862",
     "language": 3,
     "genre": [
       5
@@ -202,13 +202,13 @@
   }
 },
 {
-  "model": "example.book",
+  "model": "catalog.book",
   "pk": 3,
   "fields": {
     "title": "Война и миръ",
     "author": 3,
     "summary": "The novel chronicles the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families. Portions of an earlier version, titled The Year 1805, were serialized in The Russian Messenger from 1865 to 1867, then published in its entirety in 1869.",
-    "isnb": "9572365581214",
+    "isbn": "9572365581214",
     "language": 2,
     "genre": [
       5,
@@ -217,13 +217,13 @@
   }
 },
 {
-  "model": "example.book",
+  "model": "catalog.book",
   "pk": 4,
   "fields": {
     "title": "Test",
     "author": 4,
     "summary": "Test",
-    "isnb": "1234567890123",
+    "isbn": "1234567890123",
     "language": 1,
     "genre": [
       3
@@ -231,7 +231,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "3222a3e2-fa94-4d3e-b450-8fb079759535",
   "fields": {
     "book": 1,
@@ -242,7 +242,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "3f9269ba-ae95-47d7-bf17-cf403d46d88b",
   "fields": {
     "book": 3,
@@ -253,7 +253,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "4461378e-ca94-4e9a-b747-2cabe173b00e",
   "fields": {
     "book": 3,
@@ -264,7 +264,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "4a249639-dde4-4244-b3bb-1feb87af0ba5",
   "fields": {
     "book": 3,
@@ -275,7 +275,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "7ef975b0-b128-41d4-96b8-50cf421bd19c",
   "fields": {
     "book": 2,
@@ -286,7 +286,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "834a520b-1efa-4bb0-806c-03d8c6679681",
   "fields": {
     "book": 1,
@@ -297,7 +297,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "845b6271-508c-4198-9436-6ae08ebc374f",
   "fields": {
     "book": 4,
@@ -308,7 +308,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "9eeac27b-5fc3-489c-8892-f91eeb29be89",
   "fields": {
     "book": 1,
@@ -319,7 +319,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "b4ac076a-798e-44f4-83b9-5090dbe07f09",
   "fields": {
     "book": 2,
@@ -330,7 +330,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "cbb729c9-cb6a-43bb-96bb-fc6e4eba27c5",
   "fields": {
     "book": 1,
@@ -341,7 +341,7 @@
   }
 },
 {
-  "model": "example.bookinstance",
+  "model": "catalog.bookinstance",
   "pk": "fef3e641-71d2-4e50-97e2-cfdfc7a7772d",
   "fields": {
     "book": 2,
@@ -352,7 +352,7 @@
   }
 },
 {
-  "model": "example.author",
+  "model": "catalog.author",
   "pk": 1,
   "fields": {
     "first_name": "John",
@@ -362,7 +362,7 @@
   }
 },
 {
-  "model": "example.author",
+  "model": "catalog.author",
   "pk": 2,
   "fields": {
     "first_name": "Victor",
@@ -372,7 +372,7 @@
   }
 },
 {
-  "model": "example.author",
+  "model": "catalog.author",
   "pk": 3,
   "fields": {
     "first_name": "Leo",
@@ -382,7 +382,7 @@
   }
 },
 {
-  "model": "example.author",
+  "model": "catalog.author",
   "pk": 4,
   "fields": {
     "first_name": "Leo",
@@ -392,7 +392,7 @@
   }
 },
 {
-  "model": "example.authorprofile",
+  "model": "catalog.authorprofile",
   "pk": 1,
   "fields": {
     "author": 1,
@@ -400,7 +400,7 @@
   }
 },
 {
-  "model": "example.authorprofile",
+  "model": "catalog.authorprofile",
   "pk": 2,
   "fields": {
     "author": 2,

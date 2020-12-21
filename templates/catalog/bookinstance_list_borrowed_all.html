@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Borrowed books</h1>
+  <h1>All Borrowed Books</h1>
 
   {% if bookinstance_list %}
     <ul>
@@ -9,6 +9,8 @@
       {% for bookinst in bookinstance_list %}
         <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
           <a href="{% url 'book-detail' bookinst.book.pk %}">{{ bookinst.book.title }}</a> ({{ bookinst.due_back }})
+          {% if user.is_staff %}- {{ bookinst.borrower }}{% endif %} {% if perms.catalog.can_mark_returned %}-
+          <a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a>  {% endif %}
         </li>
       {% endfor %}
     </ul>

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_generic.html" %}
 {% load static %}
 
 {% block content %}
@@ -30,6 +30,6 @@
   </ul>
 
 
-  You have visited this page {{ num_visits }} times.
+  You have visited this page {{ num_visits }} time{% if num_visits > 1 %}s{% endif %}.
 
 {% endblock %}
