@@ -1,23 +1,27 @@
 import uuid
 from datetime import date
 
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 
 class Genre(models.Model):
-    name = models.CharField(_("name"), max_length=200, help_text=_("Enter a book genre (e.g. Scince fiction, French Poentry etc.)"))
+    name = models.CharField(
+        _("name"), max_length=200, help_text=_("Enter a book genre (e.g. Scince fiction, French Poentry etc.)")
+    )
 
     def __str__(self):
         return self.name
 
 
 class Language(models.Model):
-    name = models.CharField(_("name"), max_length=50, help_text=_("Enter the book's natural language (e.g. English, French etc.)"))
+    name = models.CharField(
+        _("name"), max_length=50, help_text=_("Enter the book's natural language (e.g. English, French etc.)")
+    )
 
     def __str__(self):
         return self.name
@@ -51,11 +55,15 @@ class BookInstance(models.Model):
         AVAILABLE = 3, _("Available")
         RESERVED = 4, _("Reserved")
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this particular book across whole library"))
+    id = models.UUIDField(  # noqa: A003
+        primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this particular book across whole library")
+    )
     book = models.ForeignKey("Book", on_delete=models.SET_NULL, null=True)
     imprint = models.CharField(_("imprint"), max_length=200, help_text=_("Enter publisher trade name"))
     due_back = models.DateField(_("due back"), null=True, blank=True)
-    status = models.PositiveSmallIntegerField(choices=LoanStatus.choices, default=LoanStatus.MAINTENANCE, blank=True, help_text=_('Book availability'))
+    status = models.PositiveSmallIntegerField(
+        choices=LoanStatus.choices, default=LoanStatus.MAINTENANCE, blank=True, help_text=_('Book availability')
+    )
     borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:

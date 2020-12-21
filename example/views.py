@@ -1,18 +1,17 @@
 import datetime
 
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from django.core.mail import send_mail, BadHeaderError
 
-
-from example.models import Book, Author, BookInstance
-from example.forms import RenewBookForm, RegisterForm, ContactFrom
+from example.forms import ContactFrom, RegisterForm, RenewBookForm
+from example.models import Author, Book, BookInstance
 
 
 def index(request):
@@ -111,7 +110,11 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact=BookInstance.LoanStatus.ON_LOAN).order_by('due_back')
+        return BookInstance.objects.filter(
+            borrower=self.request.user
+        ).filter(
+            status__exact=BookInstance.LoanStatus.ON_LOAN
+        ).order_by('due_back')
 
 
 class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):

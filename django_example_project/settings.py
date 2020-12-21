@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+from django.contrib.messages import constants as message_constants
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -139,7 +141,6 @@ STATICFILES_DIRS = [
 
 
 # Messages
-from django.contrib.messages import constants as message_constants
 MESSAGE_TAGS = {
     # message_constants.DEBUG: 'debug',
     # message_constants.INFO: 'info',
@@ -147,4 +148,3 @@ MESSAGE_TAGS = {
     # message_constants.WARNING: 'warning',
     message_constants.ERROR: 'danger',
 }
-
