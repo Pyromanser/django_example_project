@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% block br_cr %}{{ block.super }}/<a href="{% url 'contact' %}">Contact</a>{% endblock %}
+
 {% block content %}
   <h1>Contact Us</h1>
   <form method="post">

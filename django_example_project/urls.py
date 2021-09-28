@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from catalog.views import RegisterFormView
+from catalog.views import RegisterFormView, UpdateProfile, UserProfile
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,4 +29,13 @@ urlpatterns = [
     path('catalog/', include('catalog.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path("accounts/register/", RegisterFormView.as_view(), name="register"),
+    path("accounts/update_profile/", UpdateProfile.as_view(), name="update_profile"),
+    path("accounts/my_profile/", UserProfile.as_view(), name="profile"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+        path('silk/', include('silk.urls', namespace='silk'))
+    ]

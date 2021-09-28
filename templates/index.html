@@ -1,5 +1,6 @@
 {% extends "base_generic.html" %}
 {% load static %}
+{% load cache %}
 
 {% block content %}
   <h1>Local Library Home</h1>
@@ -19,6 +20,7 @@
   </div>
 
 
+  {% cache 10 num_books num_instances num_instances_available num_authors %}
   <h2>Dynamic content</h2>
 
   <p>The library has the following record counts:</p>
@@ -28,6 +30,7 @@
     <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
     <li><strong>Authors:</strong> {{ num_authors }}</li>
   </ul>
+  {% endcache %}
 
 
   You have visited this page {{ num_visits }} time{% if num_visits > 1 %}s{% endif %}.

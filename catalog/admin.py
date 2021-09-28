@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.template.defaultfilters import truncatechars, truncatewords
 
 from .models import Author, AuthorProfile, Book, BookInstance, Genre, Language
 
@@ -33,6 +34,8 @@ class AuthorModelAdmin(admin.ModelAdmin):
     """
     list_display = ["first_name", "last_name", "date_of_birth", "date_of_death"]
     fields = ['first_name', 'last_name', ('date_of_birth', 'date_of_death')]
+    date_hierarchy = "date_of_birth"
+    # readonly_fields = ['date_of_death', ]
     inlines = [AuthorProfileInlineModelAdmin, BookInlineModelAdmin]
 
 
@@ -44,6 +47,8 @@ class AuthorProfileModelAdmin(admin.ModelAdmin):
 class BooksInstanceInlineModelAdmin(admin.TabularInline):
     """Defines format of inline book instance insertion (used in BookAdmin)"""
     model = BookInstance
+    # extra = 10
+    # can_delete = False
 
 
 @admin.register(Book)
@@ -54,6 +59,9 @@ class BookModelAdmin(admin.ModelAdmin):
      - adds inline addition of book instances in book view (inlines)
     """
     list_display = ['title', 'author', 'display_genre']
+    raw_id_fields = ['author', ]
+    # list_filter = ['genre', ]
+    filter_vertical = ["genre"]
     inlines = [BooksInstanceInlineModelAdmin]
 
 
@@ -65,8 +73,9 @@ class BookInstanceModelAdmin(admin.ModelAdmin):
      - filters that will be displayed in sidebar (list_filter)
      - grouping of fields into sections (fieldsets)
     """
-    list_display = ["id", "book", "status", 'borrower', "due_back"]
+    list_display = ["id", "get_imprint", "book", "status", 'borrower', "due_back"]
     list_filter = ["status", "due_back"]
+    search_fields = ["imprint"]
     fieldsets = (
         (None, {
             'fields': ('book', 'imprint', 'id')
@@ -75,3 +84,17 @@ class BookInstanceModelAdmin(admin.ModelAdmin):
             'fields': ('status', 'due_back', 'borrower')
         }),
     )
+    actions = ["change_status_to_maintenance"]
+
+    def get_queryset(self, request):
+        return super(BookInstanceModelAdmin, self).get_queryset(request).select_related('book', "borrower")
+
+    def change_status_to_maintenance(self, request, queryset):
+        queryset.update(status=BookInstance.LoanStatus.MAINTENANCE)
+    change_status_to_maintenance.short_description = "Mark selected books as on maintenance"
+
+    def get_imprint(self, obj):
+        # return truncatewords(obj.imprint, 1)
+        return obj.imprint
+    get_imprint.short_description = "imprint"
+

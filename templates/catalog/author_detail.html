@@ -1,5 +1,6 @@
 {% extends "base_generic.html" %}
 
+{% block br_cr %}{{ block.super }}/<a href="{% url 'authors' %}">Authors list</a>/<span>{{ author }}</span>{% endblock %}
 {% block content %}
 
   <h1>Author: {{ author }} </h1>

@@ -1,10 +1,14 @@
 import datetime
+import time
+
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db import transaction
 
 from catalog.forms import ContactFrom, RegisterForm, RenewBookForm
 from catalog.models import Author, Book, BookInstance
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import BadHeaderError, send_mail
@@ -12,6 +16,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+
+
+from .tasks import send_mail as celery_send_mail
+
+User = get_user_model()
 
 
 def index(request):
@@ -42,20 +51,22 @@ def index(request):
 
 
 def contact_form(request):
-    if request.method == "GET":
-        form = ContactFrom()
-    else:
+    if request.method == "POST":
         form = ContactFrom(request.POST)
         if form.is_valid():
             subject = form.cleaned_data['subject']
             from_email = form.cleaned_data['from_email']
             message = form.cleaned_data['message']
-            try:
-                send_mail(subject, message, from_email, ['admin@example.com'])
-                messages.add_message(request, messages.SUCCESS, 'Message sent')
-            except BadHeaderError:
-                messages.add_message(request, messages.ERROR, 'Message not sent')
+            celery_send_mail.delay(subject, message, from_email)
+            messages.add_message(request, messages.SUCCESS, 'Message sent')
+            # try:
+            #     send_mail(subject, message, from_email, ['admin@example.com'])
+            #     messages.add_message(request, messages.SUCCESS, 'Message sent')
+            # except BadHeaderError:
+            #     messages.add_message(request, messages.ERROR, 'Message not sent')
             return redirect('contact')
+    else:
+        form = ContactFrom()
     return render(
         request,
         "catalog/contact.html",
@@ -71,20 +82,48 @@ class RegisterFormView(generic.FormView):
     success_url = reverse_lazy("index")
 
     def form_valid(self, form):
-        form.save()
+        user = form.save()
+        # form.cleaned_data.get("password1")
 
-        username = self.request.POST['username']
-        password = self.request.POST['password1']
+        # username = self.request.POST['username']
+        # password = self.request.POST['password1']
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(username=user.username, password=user._password)
         login(self.request, user)
         return super(RegisterFormView, self).form_valid(form)
+
+
+class UpdateProfile(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
+    model = User
+    fields = ["first_name", "last_name", "email"]
+    template_name = 'registration/update_profile.html'
+    success_url = reverse_lazy("index")
+    success_message = "Profile updated"
+
+    def get_object(self, queryset=None):
+        user = self.request.user
+        return user
+
+
+class UserProfile(LoginRequiredMixin, generic.DetailView):
+    model = User
+    template_name = "registration/profile.html"
+
+    def get_object(self, queryset=None):
+        user = self.request.user
+        return user
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(UserProfile, self).get_context_data(**kwargs)
+    #     context["posts_count"] = self.get_object().posts_set.count()
+    #     return context
 
 
 class BookListView(generic.ListView):
     """Generic class-based view for a list of books."""
     model = Book
-    paginate_by = 10
+    queryset = Book.objects.select_related("author")
+    paginate_by = 3
 
 
 class BookDetailView(generic.DetailView):
@@ -95,7 +134,10 @@ class BookDetailView(generic.DetailView):
 class AuthorListView(generic.ListView):
     """Generic class-based list view for a list of authors."""
     model = Author
-    paginate_by = 10
+    paginate_by = 2
+
+    def get_queryset(self):
+        return super(AuthorListView, self).get_queryset().select_related("authorprofile")
 
 
 class AuthorDetailView(generic.DetailView):

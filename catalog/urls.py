@@ -1,9 +1,14 @@
 from django.urls import path
 
+from django.views.decorators.cache import cache_page
+from django.views.generic import TemplateView
+
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', cache_page(0)(views.index), name='index'),
+
+    path('example', TemplateView.as_view(template_name="new_example.html"), name="example"),
 
     path('contact', views.contact_form, name="contact"),
 
