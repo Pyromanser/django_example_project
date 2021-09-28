@@ -2,8 +2,8 @@
 
 {% block content %}
 
-  <p>{{ object.username }}</p>
-  <p>{{ object.email }}</p>
+  <p>Username: {{ object.username }}</p>
+  <p>Email: {{ object.email }}</p>
   <a href="{% url "update_profile" %}">Update my profile</a>
 
 {% endblock %}
