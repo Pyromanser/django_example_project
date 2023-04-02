@@ -206,6 +206,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 try:
     from local_settings import *

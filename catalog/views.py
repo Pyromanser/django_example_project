@@ -88,7 +88,7 @@ class RegisterFormView(generic.FormView):
         # username = self.request.POST['username']
         # password = self.request.POST['password1']
 
-        user = authenticate(username=user.username, password=user._password)
+        user = authenticate(username=user.username, password=form.cleaned_data.get("password1"))
         login(self.request, user)
         return super(RegisterFormView, self).form_valid(form)
 
